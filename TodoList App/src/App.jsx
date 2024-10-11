@@ -73,7 +73,7 @@ function App() {
     <>
       <Navbar />
 
-      <div className="conainer mx-auto my-5 rounded-xl p-5 bg-violet-200 min-h-[80vh] w-1/2">
+      <div className="conainer mx-auto my-5 rounded-xl p-5 bg-violet-200 min-h-[80vh] md:w-1/2">
 
         <h1 className="font-bold text-center text-xl">Task Planner - Manage Your Todos</h1>
 
@@ -112,7 +112,7 @@ function App() {
               (showFinished || !item.isCompleted) && (
                 <div
                   key={item.id}
-                  className={"todo my-3 flex justify-between w-1/2"}
+                  className={"todo my-3 flex justify-between w-100"}
                 >
                   <div className="flex gap-5">
                     <input
