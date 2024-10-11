@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
@@ -7,9 +7,23 @@ function App() {
 
   const [todos, setTodos] = useState([]);
 
+  useEffect(() => {
+    let todoString = localStorage.getItem("todos");
+
+    if (todoString) {
+      let todos = JSON.parse(localStorage.getItem("todos"));
+      setTodos(todos);
+    }
+  }, []);
+const saveToLocalStorage = (params) => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }
+
   const handleAdd = () => {
     setTodos([...todos, { id: uuidv4(), todo, isCompleted: false }]);
     setTodo("");
+
+    saveToLocalStorage();
   };
 
   const handleChange = (e) => {
@@ -25,10 +39,18 @@ function App() {
     let newTodos = [...todos];
     newTodos[index].isCompleted = !newTodos[index].isCompleted;
     setTodos(newTodos);
+
+    saveToLocalStorage();
   };
 
   const handleEdit = (e, id) => {
-    console.log(id);
+    let t = todos.filter((i) => i.id === id);
+    setTodo(t[0].todo);
+    let newTodos = todos.filter((item) => {
+      return item.id !== id;
+    });
+    setTodos(newTodos);
+    saveToLocalStorage();
   };
 
   const handleDelete = (e, id) => {
@@ -36,6 +58,7 @@ function App() {
       return item.id !== id;
     });
     setTodos(newTodos);
+    saveToLocalStorage();
   };
 
   return (
@@ -57,7 +80,7 @@ function App() {
             onClick={handleAdd}
             className="bg-violet-600 hover:bg-violet-900 p-2 font-bold py-1 text-white rounded-md mx-6"
           >
-            Add
+            Save
           </button>
         </div>
 
@@ -72,7 +95,7 @@ function App() {
             return (
               <div
                 key={item.id}
-                className="todo my-3 flex justify-between w-1/4"
+                className="todo my-3 flex justify-between w-1/2"
               >
                 <div className="flex gap-5">
                   <input
@@ -87,7 +110,7 @@ function App() {
                   </div>
                 </div>
 
-                <div className="buttons">
+                <div className="buttons flex h-full">
                   <button
                     onClick={(e) => {
                       handleEdit(e, item.id);
