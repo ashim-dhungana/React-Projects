@@ -18,10 +18,12 @@ function App() {
     }
   }, []);
 
+  // Saving todos to Local Storage
   const toLocalStorage = (params) => {
     localStorage.setItem("todos", JSON.stringify(todos));
   };
 
+  // Option to show all todos or only unfinished todos
   const toggleFinished = (e) => {
     setShowFinished(!showFinished);
   };
@@ -52,10 +54,12 @@ function App() {
     toLocalStorage();
   };
 
+  // Getting value of new todo from input
   const handleChange = (e) => {
     setTodo(e.target.value);
   };
 
+  // To decide if a todo is completed or not
   const handleCheckbox = (e) => {
     let id = e.target.name;
     let index = todos.findIndex((item) => {
