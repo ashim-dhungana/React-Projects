@@ -46,37 +46,43 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className="bg-slate-100 flex justify-center items-center h-screen">
+        <div className="container bg-slate-600 w-1/2 text-white h-1/2">
+          <h1 className="text-xl font-bold pt-5">Weather App</h1>
 
-        <h1>Weather App</h1>
+          <br />
 
-        {/* Step 1: The form is submitted using React Hook Form */}
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
-          <input
-            type="text"
-            placeholder="city"
-            {...register("city", { value: "Kathmandu", required: true })}
-          />
+          {/* Step 1: The form is submitted using React Hook Form */}
+          <form action="" onSubmit={handleSubmit(onSubmit)} className="flex gap-5 justify-center">
+            <input
+              type="text"
+              placeholder="city"
+              {...register("city", { value: "Kathmandu", required: true })}
+              className="bg-gray-800"
+            />
 
-          <input type="submit" value="submit" />
-        </form>
+            <input type="submit" value="submit" className="bg-gray-800 hover:bg-gray-900 hover:cursor-pointer h-7 w-20" />
+          </form>
 
-        {/* Step 5: If weatherData is obtained, it is displayed, if not, error message is displayed */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+          <br />
 
-        {weatherData && (
-          <div>
-            <p>Location: {weatherData.name}</p>
-            <p>Country: {weatherData.sys.country}</p>
+          {/* Step 5: If weatherData is obtained, it is displayed, if not, error message is displayed */}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
-            <p>
-              Co-ordinates: <br></br>Longitute: {weatherData.coord.lon} &
-              Latitude: {weatherData.coord.lat}
-            </p>
+          {weatherData && (
+            <div className="leading-7">
+              <p>Location: {weatherData.name}</p>
+              <p>Country: {weatherData.sys.country}</p>
 
-            <p>Temperature: {weatherData.main.temp} &deg;C</p>
-          </div>
-        )}
+              <p>
+                Co-ordinates: <br></br>Longitute: {weatherData.coord.lon} &
+                Latitude: {weatherData.coord.lat}
+              </p>
+
+              <p>Temperature: {weatherData.main.temp} &deg;C</p>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
