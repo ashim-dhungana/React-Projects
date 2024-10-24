@@ -47,21 +47,29 @@ function App() {
   return (
     <>
       <div className="bg-slate-100 flex justify-center items-center h-screen">
-        <div className="container bg-slate-600 w-1/2 text-white h-1/2">
+        <div className="container bg-slate-600 w-1/2 text-white h-1/2   bg-gradient-to-r from-blue-500 to-blue-300 p-5 rounded-lg shadow-xl">
           <h1 className="text-xl font-bold pt-5">Weather App</h1>
 
           <br />
 
           {/* Step 1: The form is submitted using React Hook Form */}
-          <form action="" onSubmit={handleSubmit(onSubmit)} className="flex gap-5 justify-center">
+          <form
+            action=""
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex gap-5 justify-center"
+          >
             <input
               type="text"
               placeholder="city"
               {...register("city", { value: "Kathmandu", required: true })}
-              className="bg-gray-800"
+              className="bg-gray-800 rounded-sm text-center"
             />
 
-            <input type="submit" value="submit" className="bg-gray-800 hover:bg-gray-900 hover:cursor-pointer h-7 w-20" />
+            <input
+              type="submit"
+              value="submit"
+              className="bg-gray-800 hover:bg-gray-900 hover:cursor-pointer h-7 w-20 rounded-xl"
+            />
           </form>
 
           <br />
@@ -70,14 +78,24 @@ function App() {
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           {weatherData && (
-            <div className="leading-7">
-              <p>Location: {weatherData.name}</p>
-              <p>Country: {weatherData.sys.country}</p>
+            <div>
+              <p className="text-2xl font-bold">
+                {weatherData.name}, {weatherData.sys.country}
+              </p>
 
               <p>
                 Co-ordinates: <br></br>Longitute: {weatherData.coord.lon} &
                 Latitude: {weatherData.coord.lat}
               </p>
+
+              <p>Weather Condition: {weatherData.weather[0].main}</p>
+
+              <img
+                src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                alt={weatherData.weather[0].description}
+              />
+
+              <p>Weather description: {weatherData.weather[0].description}</p>
 
               <p>Temperature: {weatherData.main.temp} &deg;C</p>
             </div>
