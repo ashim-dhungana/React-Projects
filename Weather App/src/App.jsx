@@ -9,8 +9,9 @@ function App() {
   const { register, handleSubmit } = useForm();
 
   const [weatherData, setWeatherData] = useState(null);
-  const [city, setCity] = useState("Kathmandu");
+  const [city, setCity] = useState("");
   const [error, setError] = useState(null);
+  const [unit, setUnit] = useState("metric");
 
   const API_KEY = "8c4d64dbb42567072702bb006c3fc005";
 
@@ -19,10 +20,14 @@ function App() {
     const fetchWeatherData = async () => {
       try {
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=${unit}`
         );
         if (!response.ok) {
-          throw new Error("City not found");
+          if (city == "") {
+            throw new Error("");
+          } else {
+            throw new Error("City not found");
+          }
         }
         const data = await response.json();
 
@@ -44,11 +49,29 @@ function App() {
     setCity(data.city);
   };
 
+  const isDayTime = () => {
+    if (weatherData) {
+      const currentTime = Date.now() / 1000;
+      return (
+        currentTime > weatherData.sys.sunrise &&
+        currentTime < weatherData.sys.sunset
+      );
+    } else {
+      return true;
+    }
+  };
+
   return (
     <>
-      <div className="bg-slate-100 flex justify-center items-center h-screen">
-        <div className="container bg-slate-600 w-1/2 text-white h-1/2   bg-gradient-to-r from-blue-500 to-blue-300 p-5 rounded-lg shadow-xl">
-          <h1 className="text-xl font-bold pt-5">Weather App</h1>
+      <div className={`flex justify-center items-center h-screen w-full text-center`}>
+        <div
+          className={`container bg-slate-600 w-1/3 text-white h-2/3 p-5 rounded-lg shadow-xl   ${
+            isDayTime()
+              ? "bg-gradient-to-r from-blue-400 to-blue-600"
+              : "bg-black"
+          }`}
+        >
+          <h1 className="text-3xl font-bold pt-5">Weather App</h1>
 
           <br />
 
@@ -61,14 +84,20 @@ function App() {
             <input
               type="text"
               placeholder="city"
-              {...register("city", { value: "Kathmandu", required: true })}
-              className="bg-gray-800 rounded-sm text-center"
+              {...register("city", { required: true })}
+              className={` rounded-sm text-center  ${
+                isDayTime() ? "bg-gray-800" : "bg-slate-200 text-black"
+              } `}
             />
 
             <input
               type="submit"
               value="submit"
-              className="bg-gray-800 hover:bg-gray-900 hover:cursor-pointer h-7 w-20 rounded-xl"
+              className={` hover:cursor-pointer h-7 w-20 rounded-xl  ${
+                isDayTime()
+                  ? "bg-gray-800 hover:bg-gray-900"
+                  : "bg-slate-200 hover:bg-slate-100 text-black"
+              } `}
             />
           </form>
 
@@ -78,29 +107,84 @@ function App() {
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           {weatherData && (
-            <div>
+            <div className="text-lg">
               <p className="text-2xl font-bold">
                 {weatherData.name}, {weatherData.sys.country}
               </p>
 
+              <p>Longitute: {weatherData.coord.lon} </p>
+              <p>Latitude: {weatherData.coord.lat}</p>
+
+              <div className="border-t-2 border-gray-400 my-4"></div>
+
               <p>
-                Co-ordinates: <br></br>Longitute: {weatherData.coord.lon} &
-                Latitude: {weatherData.coord.lat}
+                {new Date(weatherData.sys.sunrise * 1000).toLocaleDateString(
+                  "en-US",
+                  {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )}
+
+                {/* <br />
+                {new Date().toDateString()} */}
               </p>
 
-              <p>Weather Condition: {weatherData.weather[0].main}</p>
+              {/* Converting date and time in readable format */}
+              <p>
+                Sunrise:{" "}
+                {new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString(
+                  "en-US",
+                  {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }
+                )}
+              </p>
+              <p>
+                Sunset:{" "}
+                {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString(
+                  "en-US",
+                  {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }
+                )}
+              </p>
 
-              <img
-                src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
-                alt={weatherData.weather[0].description}
-              />
+              <div className="border-t-2 border-gray-400 my-4"></div>
+
+              <p className="text-xl">
+                Weather Condition: {weatherData.weather[0].main}
+              </p>
+
+              <div className="flex justify-center">
+                <img
+                  src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                  alt={weatherData.weather[0].description}
+                />
+              </div>
 
               <p>Weather description: {weatherData.weather[0].description}</p>
 
-              <p>Temperature: {weatherData.main.temp} &deg;C</p>
+              <br />
+
+              <p>
+                Temperature: {weatherData.main.temp}&deg;C /{" "}
+                {(weatherData.main.temp * 9) / 5 + 32}&deg;F
+              </p>
             </div>
           )}
         </div>
+
+{/* 
+        <div className="bg-yellow-500 ml-auto">
+          <div className="condition bg-green-500">
+            {isDayTime() ? <p>Day Time</p> : <p>Night Time</p>}
+          </div>
+        </div> */}
       </div>
     </>
   );
