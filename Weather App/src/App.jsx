@@ -61,13 +61,29 @@ function App() {
     }
   };
 
+  function currentTime(timezone) {
+    const timeZone = timezone * 1000;
+    const currentTime = new Date();
+
+    const actualTime =
+      currentTime.getTime() + currentTime.getTimezoneOffset() * 60000;
+    const localTime = new Date(actualTime + timeZone);
+
+    return localTime.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
   return (
     <>
-      <div className={`flex justify-center items-center h-screen w-full text-center`}>
+      <div
+        className={`flex justify-center items-center h-screen w-full text-center`}
+      >
         <div
-          className={`container bg-slate-600 w-1/3 text-white h-2/3 p-5 rounded-lg shadow-xl   ${
+          className={`container bg-slate-600 w-1/2 text-white h-2/3 p-5 rounded-lg shadow-xl   ${
             isDayTime()
-              ? "bg-gradient-to-r from-blue-400 to-blue-600"
+              ? "bg-gradient-to-r from-blue-500 to-blue-700"
               : "bg-black"
           }`}
         >
@@ -127,13 +143,12 @@ function App() {
                     day: "numeric",
                   }
                 )}
-
-                {/* <br />
-                {new Date().toDateString()} */}
               </p>
 
+              <p>{currentTime(weatherData.timezone)}</p>
+
               {/* Converting date and time in readable format */}
-              <p>
+              {/* <p>
                 Sunrise:{" "}
                 {new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString(
                   "en-US",
@@ -142,17 +157,12 @@ function App() {
                     minute: "2-digit",
                   }
                 )}
-              </p>
-              <p>
-                Sunset:{" "}
-                {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString(
-                  "en-US",
-                  {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }
-                )}
-              </p>
+              </p> */}
+
+              <br />
+              <div className="text-xl font-semibold">
+                {isDayTime() ? <p>Day Time</p> : <p>Night Time</p>}
+              </div>
 
               <div className="border-t-2 border-gray-400 my-4"></div>
 
@@ -173,18 +183,11 @@ function App() {
 
               <p>
                 Temperature: {weatherData.main.temp}&deg;C /{" "}
-                {(weatherData.main.temp * 9) / 5 + 32}&deg;F
+                {((weatherData.main.temp*9/5) + 32).toFixed(2)}&deg;F
               </p>
             </div>
           )}
         </div>
-
-{/* 
-        <div className="bg-yellow-500 ml-auto">
-          <div className="condition bg-green-500">
-            {isDayTime() ? <p>Day Time</p> : <p>Night Time</p>}
-          </div>
-        </div> */}
       </div>
     </>
   );
