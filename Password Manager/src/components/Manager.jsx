@@ -118,36 +118,44 @@ const Manager = () => {
 
         {/* Table for showing passwords */}
         <div className="passwords">
-          <h2>Your Passwords</h2>
+          <h2 className="font-bold text-2xl py-4">Your Passwords</h2>
 
-          <table className="table-auto w-full overflow-hidden rounded-md">
-            <thead className="bg-green-600">
-              <tr>
-                <th className="py-2">Site</th>
-                <th className="py-2">Username</th>
-                <th className="py-2">Password</th>
-              </tr>
-            </thead>
+          {passwordArray.length === 0 && <div>No passwords to show</div>}
 
-            {/* Table body */}
-            <tbody className="text-center bg-green-100">
-              <tr>
-                <td className="py-2">The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                <td className="py-2">Malcolm Lockyer</td>
-                <td className="py-2">1961</td>
-              </tr>
-              <tr>
-                <td className="py-2">Witchy Woman</td>
-                <td className="py-2">The Eagles</td>
-                <td className="py-2">1972</td>
-              </tr>
-              <tr>
-                <td className="py-2">Shining Star</td>
-                <td className="py-2">Earth, Wind, and Fire</td>
-                <td className="py-2">1975</td>
-              </tr>
-            </tbody>
-          </table>
+          {passwordArray.length != 0 && (
+            <table className="table-auto w-full overflow-hidden rounded-md">
+              <thead className="bg-green-600">
+                <tr>
+                  <th className="py-2">Site</th>
+                  <th className="py-2">Username</th>
+                  <th className="py-2">Password</th>
+                </tr>
+              </thead>
+
+              {/* Table body */}
+              <tbody className="text-center bg-green-100">
+                <tr>
+                  <td className="py-2 border border-white">
+                    The Sliding Mr. Bones (Next Stop, Pottersville)
+                  </td>
+                  <td className="py-2 border border-white">Malcolm Lockyer</td>
+                  <td className="py-2 border border-white">1961</td>
+                </tr>
+                <tr>
+                  <td className="py-2 border border-white">Witchy Woman</td>
+                  <td className="py-2 border border-white">The Eagles</td>
+                  <td className="py-2 border border-white">1972</td>
+                </tr>
+                <tr>
+                  <td className="py-2 border border-white">Shining Star</td>
+                  <td className="py-2 border border-white">
+                    Earth, Wind, and Fire
+                  </td>
+                  <td className="py-2 border border-white">1975</td>
+                </tr>
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </>
