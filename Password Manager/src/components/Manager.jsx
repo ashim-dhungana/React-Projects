@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from "react";
 
 const Manager = () => {
   const ref = useRef();
+  const passwordRef = useRef();
 
   const [form, setForm] = useState({ site: "", username: "", password: "" });
   const [passwordArray, setPasswordArray] = useState([]);
@@ -19,11 +20,14 @@ const Manager = () => {
 
   // To toggle show and hide password
   const showPassword = () => {
-    alert("Show the password");
     if (ref.current.src.includes("icons/eyecross.png")) {
       ref.current.src = "icons/eye.png";
+      // Changing the type of password from visible to invisibe
+      passwordRef.current.type = "password";
     } else {
       ref.current.src = "icons/eyecross.png";
+      // Changing the type of password from invisible to visibe
+      passwordRef.current.type = "text";
     }
   };
 
@@ -38,6 +42,11 @@ const Manager = () => {
     localStorage.setItem("passwords", JSON.stringify([...passwordArray, form]));
     console.log([...passwordArray, form]);
   };
+
+  // Copying the details to clipboard
+  const copyText = (text) => {
+    navigator.clipboard.writeText(text)
+  }
 
   return (
     <>
@@ -83,7 +92,8 @@ const Manager = () => {
             <div className="relative">
               <input
                 className="rounded-full border border-green-400 w-full p-4 py-1"
-                type="text"
+                ref={passwordRef}
+                type="password"
                 name="password"
                 placeholder="Enter Password"
                 onChange={handleChange}
@@ -149,13 +159,47 @@ const Manager = () => {
                   return (
                     <tr key={index}>
                       <td className="py-2 border border-white">
-                        <a href={item.site} target="_blank">{item.site}</a>
+                        <div className="flex justify-center items-center">
+                          <a href={item.site} target="_blank">
+                            {item.site}
+                          </a>
+
+                          {/* Copy button */}
+                          <span className="cursor-pointer" onClick={()=>{copyText(item.site)}}>
+                            <lord-icon
+                              src="https://cdn.lordicon.com/lyrrgrsl.json"
+                              trigger="hover"
+                            ></lord-icon>
+                          </span>
+                        </div>
                       </td>
+
                       <td className="py-2 border border-white">
-                        {item.username}
+                        <div className="flex justify-center items-center">
+                          {item.username}
+
+                          {/* Copy button */}
+                          <span className="cursor-pointer" onClick={()=>{copyText(item.username)}}>
+                            <lord-icon
+                              src="https://cdn.lordicon.com/lyrrgrsl.json"
+                              trigger="hover"
+                            ></lord-icon>
+                          </span>
+                        </div>
                       </td>
+
                       <td className="py-2 border border-white">
-                        {item.password}
+                        <div className="flex justify-center items-center">
+                          {item.password}
+
+                          {/* Copy button */}
+                          <span className="cursor-pointer" onClick={()=>{copyText(item.password)}}>
+                            <lord-icon
+                              src="https://cdn.lordicon.com/lyrrgrsl.json"
+                              trigger="hover"
+                            ></lord-icon>
+                          </span>
+                        </div>
                       </td>
                     </tr>
                   );
