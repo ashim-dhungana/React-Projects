@@ -1,8 +1,11 @@
 // 'ibelick bg' for tailwind background
 // icons from 'lordicon'
+// popup from 'react-toastify'
 
 import React from "react";
 import { useRef, useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Manager = () => {
   const ref = useRef();
@@ -45,11 +48,39 @@ const Manager = () => {
 
   // Copying the details to clipboard
   const copyText = (text) => {
-    navigator.clipboard.writeText(text)
-  }
+    navigator.clipboard.writeText(text);
+
+    toast("🦄Copied to clipboard", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: "Bounce",
+    });
+  };
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition="Bounce"
+      />
+
+      {/* Same as */}
+      <ToastContainer />
       {/* background gradient */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
         <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-green-500 opacity-20 blur-[100px]"></div>
@@ -122,7 +153,7 @@ const Manager = () => {
               src="https://cdn.lordicon.com/jgnvfzqg.json"
               trigger="hover"
             ></lord-icon>
-            Add Password
+            Save Password
           </button>
         </div>
 
@@ -139,6 +170,7 @@ const Manager = () => {
                   <th className="py-2">Site</th>
                   <th className="py-2">Username</th>
                   <th className="py-2">Password</th>
+                  <th className="py-2">Action</th>
                 </tr>
               </thead>
 
@@ -165,7 +197,12 @@ const Manager = () => {
                           </a>
 
                           {/* Copy button */}
-                          <span className="cursor-pointer" onClick={()=>{copyText(item.site)}}>
+                          <span
+                            className="cursor-pointer"
+                            onClick={() => {
+                              copyText(item.site);
+                            }}
+                          >
                             <lord-icon
                               src="https://cdn.lordicon.com/lyrrgrsl.json"
                               trigger="hover"
@@ -179,7 +216,12 @@ const Manager = () => {
                           {item.username}
 
                           {/* Copy button */}
-                          <span className="cursor-pointer" onClick={()=>{copyText(item.username)}}>
+                          <span
+                            className="cursor-pointer"
+                            onClick={() => {
+                              copyText(item.username);
+                            }}
+                          >
                             <lord-icon
                               src="https://cdn.lordicon.com/lyrrgrsl.json"
                               trigger="hover"
@@ -193,13 +235,37 @@ const Manager = () => {
                           {item.password}
 
                           {/* Copy button */}
-                          <span className="cursor-pointer" onClick={()=>{copyText(item.password)}}>
+                          <span
+                            className="cursor-pointer"
+                            onClick={() => {
+                              copyText(item.password);
+                            }}
+                          >
                             <lord-icon
                               src="https://cdn.lordicon.com/lyrrgrsl.json"
                               trigger="hover"
                             ></lord-icon>
                           </span>
                         </div>
+                      </td>
+
+                      {/* Delete and Edit buttons */}
+                      <td className="py-2 border border-white">
+                        <span className="cursor-pointer mx-1">
+                          <lord-icon
+                            src="https://cdn.lordicon.com/exymduqj.json"
+                            trigger="hover"
+                            stroke="bold"
+                            state="hover-line"
+                          ></lord-icon>
+                        </span>
+
+                        <span className="cursor-pointer mx-1">
+                          <lord-icon
+                            src="https://cdn.lordicon.com/wpyrrmcq.json"
+                            trigger="hover"
+                          ></lord-icon>
+                        </span>
                       </td>
                     </tr>
                   );
